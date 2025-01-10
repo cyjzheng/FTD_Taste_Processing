@@ -1,0 +1,25 @@
+load('data_df_PSTH');
+assigned_tastes={'S','N','Q','C'};
+start_window=0;
+end_window=5000;
+Pre=-6000;
+alpha=0.05;
+bw_sd=2;
+pre_window=1000;
+post_window=250;
+window=250;
+limit=5000;
+stimulus='valve_on';
+foldername1='202210_4taste_pre6000_post10000_final'; %v2b1 doesn not threshold firing rate. v2b does
+path=['D:\AF Lab\matlab_data\best_window\',foldername1,'\SD',num2str(bw_sd),'\bw_avgALL_responsive_',stimulus,'_pre',num2str(pre_window),'_post',num2str(window),'_postwindow',num2str(post_window),'_limit',num2str(limit)];
+cd(path);
+load("uni_sig_bw.mat");
+Binsize=1000;
+fun_anova_datadf(datadf_PSTH, assigned_tastes, Binsize, start_window, end_window, Pre, alpha,path);
+load("anova_uni_sig_bw.mat");
+Binsize=250;
+ks_start=0;
+ks_end=5000;
+Pre=-6000;
+alpha=0.05;
+[sig_p_kw_bin]=kruskal_wallis_consecutive_bin_onANOVA_datadf(datadf_PSTH, Binsize, ks_start, ks_end, Pre, alpha,anova_uni_sig_bw,uni_sig_bw);

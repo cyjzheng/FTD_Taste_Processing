@@ -1,0 +1,19 @@
+ % Group1.data=squeeze(proportion_incN(1,1:2,:))'; 
+% Group2.data=squeeze(proportion_incN(2,1:2,:))'; %row should be RowFactorname, column is n repeats
+function[pval,tbl,stats] = fun_anova(Group1,Group2)
+Group1.reshaped_data=reshape(vertcat(Group1.data(:)),[],1);
+Group2.reshaped_data=reshape(vertcat(Group2.data(:)),[],1);
+temp1=1:size(Group1.data,1);
+nRepeat=size(Group1.data,2);
+rowLabels1=repmat(temp1,1,nRepeat)';
+temp2=1:size(Group2.data,1);
+nRepeat=size(Group2.data,2);
+rowLabels2=repmat(temp2,1,nRepeat)';
+rowLabels=vertcat(rowLabels1,rowLabels2);
+data=vertcat(Group1.reshaped_data,Group2.reshaped_data);
+colLabels1 =repmat({Group1.name},size(Group1.data,1)*size(Group1.data,2),1);
+colLabels2 =repmat({Group2.name},size(Group2.data,1)*size(Group2.data,2),1);
+colLabels=char(vertcat(colLabels1,colLabels2));
+% [pval,tbl,stats] = anovan(data,{rowLabels colLabels},'Model','full','varnames',{'row','col'},'continuous',1);
+[pval,tbl,stats] = anovan(data,{rowLabels colLabels},'Model','full','varnames',{'row','col'});
+end
